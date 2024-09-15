@@ -1,8 +1,78 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Pool } from '../../../types'
+import { metadata as landingMetadata } from '../../../constants/metadata'
 
-// Fetch a specific pool from the API
+export async function generateMetadata({ params }: { params: { poolId: string } }) {
+  const { poolId } = params
+  const pool = await fetchPool(poolId)
+
+  if (!pool) {
+    return {
+      ...landingMetadata,
+      title: 'Pool Not Found',
+      openGraph: {
+        ...landingMetadata.openGraph,
+        title: 'Pool Not Found',
+        images: []
+      },
+      twitter: {
+        ...landingMetadata.twitter,
+        title: 'Pool Not Found',
+        images: [],
+      },
+      other: {
+        ...landingMetadata.other,
+        'fc:frame:image': `${process.env.NEXT_PUBLIC_URL}api/images/about`,
+        'fc:frame:button:1': 'Create a Pool',
+        'fc:frame:button:1:action': 'link',
+        'fc:frame:button:1:target': `${process.env.NEXT_PUBLIC_URL}pools/create`,
+        'fc:frame:button:1:post_url': process.env.NEXT_PUBLIC_URL + 'pools/create',
+    
+        'fc:frame:button:2': 'View Pool Details',
+        'fc:frame:button:2:action': 'link',
+        'fc:frame:button:2:target': `${process.env.NEXT_PUBLIC_URL}pools/${poolId}`,
+        'fc:frame:button:2:post_url': process.env.NEXT_PUBLIC_URL + `pools/${poolId}`,
+      },
+    }
+  }
+
+  return {
+    ...landingMetadata,
+    title: pool.name,
+    openGraph: {
+      ...landingMetadata.openGraph,
+      title: pool.name,
+      images: [
+        {
+          url: `${process.env.NEXT_PUBLIC_URL}/api/images/pools/${pool.id}`,
+          width: 1200,
+          height: 630,
+          alt: `${pool.name} Image`,
+        },
+      ],
+    },
+    twitter: {
+      ...landingMetadata.twitter,
+      title: pool.name,
+      images: [`${process.env.NEXT_PUBLIC_URL}/api/images/pools/${pool.id}`],
+    },
+    other: {
+        ...landingMetadata.other,
+        'fc:frame:image': `${process.env.NEXT_PUBLIC_URL}/api/images/pools/${pool.id}`,
+        'fc:frame:button:1': 'Create a Pool',
+        'fc:frame:button:1:action': 'link',
+        'fc:frame:button:1:target': `${process.env.NEXT_PUBLIC_URL}pools/create`,
+        'fc:frame:button:1:post_url': process.env.NEXT_PUBLIC_URL + 'pools/create',
+    
+        'fc:frame:button:2': 'View Pool Details',
+        'fc:frame:button:2:action': 'link',
+        'fc:frame:button:2:target': `${process.env.NEXT_PUBLIC_URL}pools/${poolId}`,
+        'fc:frame:button:2:post_url': process.env.NEXT_PUBLIC_URL + `pools/${poolId}`,
+    },
+  }
+}
+
 const fetchPool = async (poolId: string): Promise<Pool | null> => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/pools/${poolId}`, {

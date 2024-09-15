@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
-import { pools } from '../../../../../constants/pools'
-import { Candidate } from '../../../../../types'
+import { pools } from '../../../../../../../constants/pools'
+import { Candidate } from '../../../../../../../types'
 
 export async function GET(
   request: NextRequest,

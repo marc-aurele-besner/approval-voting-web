@@ -18,7 +18,7 @@ export async function GET(request: NextRequest,
   return new ImageResponse(
     (
       <div
-        tw="flex flex-col items-start justify-center w-[1200px] h-[630px] bg-gray-900 text-gray-100 font-sans p-[50px] box-border"
+        tw="flex flex-col items-start justify-center w-[1200px] h-[630px] bg-dark text-gray-100 font-sans p-[50px] box-border"
       >
         <h1
           tw="text-[50px] font-bold mb-5 border-b-2 border-gray-100 pb-2 w-full"
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest,
               <span tw="text-[28px] font-semibold">
                 {candidate.name}
               </span>
-              <span tw="text-[24px] text-gray-400">
+              <span tw="text-[24px] text-gray-500">
                 {candidate.affiliation}
               </span>
             </li>

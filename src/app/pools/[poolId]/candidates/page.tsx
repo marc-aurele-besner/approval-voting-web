@@ -1,32 +1,35 @@
 import Link from 'next/link'
-import fetchCandidates from '../../utils/fetchCandidates'
-import { Candidate } from '../../types'
-import { metadata as landingMetadata } from '../../constants/metadata'
+import fetchCandidates from '../../../../utils/fetchCandidates'
+import { Candidate } from '../../../../types'
+import { metadata as landingMetadata } from '../../../../constants/metadata'
 
-export const metadata = {
-  ...landingMetadata,
-  title: 'Candidates',
-  openGraph: {
-    ...landingMetadata.openGraph,
+export async function generateMetadata({ params }: { params: { poolId: string } }) {
+  const { poolId } = params
+  return {
+    ...landingMetadata,
     title: 'Candidates',
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_URL}/api/images/candidates`,
-        width: 1200,
-        height: 630,
-        alt: 'Candidates List',
-      },
-    ],
-  },
-  twitter: {
-    ...landingMetadata.twitter,
-    title: 'Candidates',
-    images: [`${process.env.NEXT_PUBLIC_URL}/api/images/candidates`],
-  },
-  other: {
-    ...landingMetadata.other,
-    'fc:frame:image': `${process.env.NEXT_PUBLIC_URL}/api/images/candidates`,
-  },
+    openGraph: {
+      ...landingMetadata.openGraph,
+      title: 'Candidates',
+      images: [
+        {
+          url: `${process.env.NEXT_PUBLIC_URL}/api/images/candidates`,
+          width: 1200,
+          height: 630,
+          alt: 'Candidates List',
+        },
+      ],
+    },
+    twitter: {
+      ...landingMetadata.twitter,
+      title: 'Candidates',
+      images: [`${process.env.NEXT_PUBLIC_URL}/api/images/pools/${poolId}/candidates`],
+    },
+    other: {
+      ...landingMetadata.other,
+      'fc:frame:image': `${process.env.NEXT_PUBLIC_URL}/api/images/pools/${poolId}/candidates`,
+    },
+  }
 }
 
 export default async function Candidates() {

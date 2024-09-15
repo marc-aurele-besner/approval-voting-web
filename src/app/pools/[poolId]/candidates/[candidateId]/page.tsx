@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { Pool } from '../../../types'
-import fetchCandidates from '../../../utils/fetchCandidates'
-import fetchPools from '../../../utils/fetchPools'
-import { metadata as landingMetadata } from '../../../constants/metadata'
+import { Pool } from '../../../../../types'
+import fetchCandidates from '../../../../../utils/fetchCandidates'
+import fetchPools from '../../../../../utils/fetchPools'
+import { metadata as landingMetadata } from '../../../../../constants/metadata'
 
 interface CandidateDetailProps {
-  params: { candidateId: string }
+  params: { candidateId: string, poolId: string }
 }
 
 export async function generateMetadata({ params }: CandidateDetailProps) {
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: CandidateDetailProps) {
       },
       other: {
         ...landingMetadata.other,
-        'fc:frame:image': `${process.env.NEXT_PUBLIC_URL}/api/images/candidates/${candidateId}`,
+        'fc:frame:image': `${process.env.NEXT_PUBLIC_URL}/api/images/pools/${params.poolId}/candidates/${candidateId}`,
       },
     }
   }
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: CandidateDetailProps) {
       title: candidate.name,
       images: [
         {
-          url: `${process.env.NEXT_PUBLIC_URL}/api/images/candidates/${candidate.id}`,
+          url: `${process.env.NEXT_PUBLIC_URL}/api/images/pools/${params.poolId}/candidates/${candidate.id}`,
           width: 1200,
           height: 630,
           alt: `${candidate.name} Image`,
@@ -53,15 +53,15 @@ export async function generateMetadata({ params }: CandidateDetailProps) {
     twitter: {
       ...landingMetadata.twitter,
       title: candidate.name,
-      images: [`${process.env.NEXT_PUBLIC_URL}/api/images/candidates/${candidate.id}`],
+      images: [`${process.env.NEXT_PUBLIC_URL}/api/images/pools/${params.poolId}/candidates/${candidate.id}`],
     },
     other: {
         ...landingMetadata.other,
-        'fc:frame:image': `${process.env.NEXT_PUBLIC_URL}/api/images/candidates/${candidate.id}`,
+        'fc:frame:image': `${process.env.NEXT_PUBLIC_URL}/api/images/pools/${params.poolId}/candidates/${candidate.id}`,
 
         'fc:frame:button:1': 'View Candidate Details',
         'fc:frame:button:1:action': 'link',
-        'fc:frame:button:1:target': `${process.env.NEXT_PUBLIC_URL}candidates/${candidate.id}`,
+        'fc:frame:button:1:target': `${process.env.NEXT_PUBLIC_URL}/candidates/${candidate.id}`,
         'fc:frame:button:1:post_url': process.env.NEXT_PUBLIC_URL + `candidates/${candidate.id}`,
     },
   }

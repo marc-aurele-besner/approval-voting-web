@@ -5,6 +5,7 @@ const fetchCandidates = async (): Promise<Candidate[]> => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/candidates`, {
       method: 'GET',
     })
+    console.log('res', res)
     if (!res.ok) {
       throw new Error('Failed to fetch candidates')
     }

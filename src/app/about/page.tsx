@@ -1,4 +1,39 @@
-import { twitterUrl, metadata } from '../../constants/metadata'
+import { twitterUrl, metadata as landingMetadata } from '../../constants/metadata'
+
+export const metadata = {
+  ...landingMetadata,
+  title: 'About Us',
+  openGraph: {
+    ...landingMetadata.openGraph,
+    title: 'About Us',
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_URL}api/images/about`,
+        width: 1200,
+        height: 630,
+        alt: 'About Us Image',
+      },
+    ],
+  },
+  twitter: {
+    ...landingMetadata.twitter,
+    title: 'About Us',
+    images: [`${process.env.NEXT_PUBLIC_URL}api/images/about`],
+  },
+  other: {
+    ...landingMetadata.other,
+    'fc:frame:image': `${process.env.NEXT_PUBLIC_URL}api/images/about`,
+    'fc:frame:button:1': 'Create a Pool',
+    'fc:frame:button:1:action': 'link',
+    'fc:frame:button:1:target': `${process.env.NEXT_PUBLIC_URL}pools/create`,
+    'fc:frame:button:1:post_url': process.env.NEXT_PUBLIC_URL + 'pools/create',
+
+    'fc:frame:button:2': 'View Pools',
+    'fc:frame:button:2:action': 'link',
+    'fc:frame:button:2:target': `${process.env.NEXT_PUBLIC_URL}pools`,
+    'fc:frame:button:2:post_url': process.env.NEXT_PUBLIC_URL + 'pools',
+  },
+}
 
 export default function About() {
   return (

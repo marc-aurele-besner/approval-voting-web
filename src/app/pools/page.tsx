@@ -1,5 +1,50 @@
 import fetchPools from '../../utils/fetchPools'
 import Link from 'next/link'
+import { metadata as landingMetadata } from '../../constants/metadata'
+
+export async function generateMetadata() {
+  const pools = await fetchPools()
+  const poolButtons = pools.slice(0, 3).map((pool, index) => ({
+    [`fc:frame:button:${index + 1}`]: pool.name,
+    [`fc:frame:button:${index + 1}:action`]: 'link',
+    [`fc:frame:button:${index + 1}:target`]: `${process.env.NEXT_PUBLIC_URL}pools/${pool.id}`,
+    [`fc:frame:button:${index + 1}:post_url`]: `${process.env.NEXT_PUBLIC_URL}pools/${pool.id}`,
+  }))
+  const createPoolButton = {
+    [`fc:frame:button:${poolButtons.length + 1}`]: 'Create',
+    [`fc:frame:button:${poolButtons.length + 1}:action`]: 'link',
+    [`fc:frame:button:${poolButtons.length + 1}:target`]: `${process.env.NEXT_PUBLIC_URL}pools/create`,
+    [`fc:frame:button:${poolButtons.length + 1}:post_url`]: `${process.env.NEXT_PUBLIC_URL}pools/create`,
+  }
+
+  return {
+    ...landingMetadata,
+    title: 'Pools',
+    openGraph: {
+      ...landingMetadata.openGraph,
+      title: 'Pools',
+      images: [
+        {
+          url: `${process.env.NEXT_PUBLIC_URL}/api/images/pools`,
+          width: 1200,
+          height: 630,
+          alt: 'Pools List',
+        },
+      ],
+    },
+    twitter: {
+      ...landingMetadata.twitter,
+      title: 'Pools',
+      images: [`${process.env.NEXT_PUBLIC_URL}/api/images/pools`],
+    },
+    other: {
+      ...landingMetadata.other,
+      'fc:frame:image': `${process.env.NEXT_PUBLIC_URL}api/images/pools`,
+      ...Object.assign({}, ...poolButtons),
+      ...createPoolButton,
+    },
+  }
+}
 
 export default async function Pools() {
   const pools = await fetchPools()
